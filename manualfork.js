@@ -133,7 +133,13 @@ var ManualFork = {
         resolve()
       })
       flow.catch(function (error) {
-        reject(error)
+        cleanTemp({
+          tmpCreated: opts.tmpCreated,
+          tempFolder: opts.tempFolder,
+          tmpPath: opts.tmpPath
+        }).then(function(){
+          reject(error)
+        })
       })
     })
   },
@@ -144,7 +150,6 @@ var ManualFork = {
     pushTarget: pushTarget,
     cleanTemp: cleanTemp,
     buildUrl: buildUrl,
-    buildRepoObject: buildRepoObject,
     gitExec: gitExec,
     toolsJoin: toolsJoin,
     deleteFolderRecursive: deleteFolderRecursive,
@@ -226,13 +231,6 @@ function cleanTemp (opts) {
 function buildUrl (username, token, host, account, repo) {
   return 'https://' + username + ':' + token + '@' + host + '/' + account + '/' + repo + '.git'
 }
-function buildRepoObject (repoString) {
-  repoString = repoString.split('/')
-  return {
-    account: repoString[0],
-    repo: repoString[1]
-  }
-}
 
 // Internal helper to talk to the git subprocess
 // From creationix/node-git https://github.com/creationix/node-git/blob/master/lib/git-fs.js#L187
@@ -262,9 +260,6 @@ function gitExec (commands, opts, callback) {
     if (exitCode > 0) {
       console.log('Exit code sux ass')
       var err = new Error('git ' + commands.join(' ') + '\n' + toolsJoin(stderr, 'utf8'))
-      if (gitENOENT.test(err.message)) {
-        err.errno = process.ENOENT
-      }
       callback(err)
       return
     }

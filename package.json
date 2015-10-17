@@ -1,8 +1,11 @@
 {
   "name": "manualfork",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A simple node module that allows you to manually (and cleanly) fork a Github repository into another location. The magic behind therebelrobot/manualfork",
   "main": "manualfork.js",
+  "bin": {
+    "manualfork": "bin/cli"
+  },
   "scripts": {
     "test": "mocha"
   },
@@ -18,6 +21,8 @@
   "homepage": "https://github.com/therebelrobot/node-manualfork#readme",
   "dependencies": {
     "breeze": "^1.1.7",
+    "cli": "^0.11.0",
+    "dotenv": "^1.2.0",
     "github": "^0.2.4",
     "lodash": "^3.10.1"
   }

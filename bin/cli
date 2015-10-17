@@ -1,0 +1,74 @@
+#! /usr/bin/env node
+
+console.log('hello!')
+require('dotenv').load()
+var cli = require('cli')
+var pkg = require('../package.json')
+var manualfork = require('../manualfork')
+cli.enable('help', 'version', 'status')
+cli.setApp('manualfork', pkg.version)
+var userOpts = [ 'u', 'Your Github Username', 'string' ]
+if(process.env.GITHUB_USER){
+  var user = process.env.GITHUB_USER
+  userOpts.push(user)
+}
+var tokenOpts = [ 't', 'Your Github Access Token', 'string' ]
+if(process.env.GITHUB_TOKEN){
+  var token = process.env.GITHUB_TOKEN
+  tokenOpts.push(token)
+}
+var options = cli.parse({
+  user: userOpts,
+  token: tokenOpts,
+  branch: [ 'b', 'branches to pull from:to (e.g. master:develop)', 'string', 'master:master'],
+  force: [ 'f', 'force push target branch', 'bool', false],
+  create: [ 'c', 'create target repo on Github', 'bool', false],
+})
+cli.main(function (args, options) {
+  var middleware = []
+  var command = this
+  command.debug(JSON.stringify(args))
+  args = args.length > 1 ? args : ['','']
+  var source = args[0]
+  source = buildRepoObject(source)
+  var target = args[2] || args[1]
+  target = buildRepoObject(target)
+  options.branch = buildBranchObject(options.branch)
+  source.branch = options.branch.source
+  target.branch = options.branch.target
+  var manualforkOpts = {
+    username: options.username,
+    token: options.token,
+    host: 'github.com',
+    source: source,
+    target: target
+  }
+  if (options.create){
+    manualforkOpts.create = options.create
+  }
+  command.debug(JSON.stringify(options))
+  manualfork.fork(manualforkOpts)
+  .then(function(data){
+    command.ok('manualfork of '+args[0]+' to '+(args[2] || args[1])+' was successful!')
+  })
+  .catch(function(err){
+    command.error('manualfork of '+args[0]+' to '+(args[2] || args[1])+' failed.')
+    command.error(err)
+  })
+
+})
+
+function buildRepoObject (repoString) {
+  repoString = repoString.split('/')
+  return {
+    account: repoString[0],
+    repo: repoString[1]
+  }
+}
+function buildBranchObject (branchString) {
+  branchString = branchString.split(':')
+  return {
+    source: branchString[0],
+    target: branchString[1]
+  }
+}
