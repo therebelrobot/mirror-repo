@@ -8,12 +8,12 @@ var manualfork = require('../manualfork')
 cli.enable('help', 'version', 'status')
 cli.setApp('manualfork', pkg.version)
 var userOpts = [ 'u', 'Your Github Username', 'string' ]
-if(process.env.GITHUB_USER){
+if (process.env.GITHUB_USER) {
   var user = process.env.GITHUB_USER
   userOpts.push(user)
 }
 var tokenOpts = [ 't', 'Your Github Access Token', 'string' ]
-if(process.env.GITHUB_TOKEN){
+if (process.env.GITHUB_TOKEN) {
   var token = process.env.GITHUB_TOKEN
   tokenOpts.push(token)
 }
@@ -28,7 +28,7 @@ cli.main(function (args, options) {
   var middleware = []
   var command = this
   command.debug(JSON.stringify(args))
-  args = args.length > 1 ? args : ['','']
+  args = args.length > 1 ? args : ['', '']
   var source = args[0]
   source = buildRepoObject(source)
   var target = args[2] || args[1]
@@ -43,18 +43,18 @@ cli.main(function (args, options) {
     source: source,
     target: target
   }
-  if (options.create){
+  if (options.create) {
     manualforkOpts.create = options.create
   }
   command.debug(JSON.stringify(options))
   manualfork.fork(manualforkOpts)
-  .then(function(data){
-    command.ok('manualfork of '+args[0]+' to '+(args[2] || args[1])+' was successful!')
-  })
-  .catch(function(err){
-    command.error('manualfork of '+args[0]+' to '+(args[2] || args[1])+' failed.')
-    command.error(err)
-  })
+    .then(function (data) {
+      command.ok('manualfork of ' + args[0] + ' to ' + (args[2] || args[1]) + ' was successful!')
+    })
+    .catch(function (err) {
+      command.error('manualfork of ' + args[0] + ' to ' + (args[2] || args[1]) + ' failed.')
+      command.error(err)
+    })
 
 })
 

@@ -1,7 +1,6 @@
 var fs = require('fs')
 var ChildProcess = require('child_process')
 var path = require('path')
-var _ = require('lodash')
 var GitHubApi = require('github')
 var gh
 var Breeze = require('breeze')
@@ -68,14 +67,13 @@ var ManualFork = {
       opts.target.branch = opts.target.branch || opts.branch || 'master'
       opts.tempFolder = opts.tempFolder ? path.resolve(process.cwd(), opts.tempFolder) : path.resolve(__dirname, './tmp')
       console.log(opts.tempFolder)
-      try{
+      try {
         var folderStats = fs.statSync(opts.tempFolder)
         console.log(opts.tempFolder, folderStats.isDirectory())
-        if(!folderStats.isDirectory()){
+        if (!folderStats.isDirectory()) {
           reject('Temporary path is not a directory.')
         }
-      }
-      catch(e){
+      } catch (e) {
         opts.tmpCreated = true
         fs.mkdirSync(opts.tempFolder)
       }
@@ -95,7 +93,7 @@ var ManualFork = {
         }
       })
       var flow = new Breeze()
-      if (opts.create){
+      if (opts.create) {
         flow.then(function (next) {
           next(createTarget({
             username: opts.username,
@@ -137,7 +135,7 @@ var ManualFork = {
           tmpCreated: opts.tmpCreated,
           tempFolder: opts.tempFolder,
           tmpPath: opts.tmpPath
-        }).then(function(){
+        }).then(function () {
           reject(error)
         })
       })
@@ -166,7 +164,7 @@ function createTarget (opts) {
       token: opts.target.token
     })
     var msg = {
-      name: opts.target.repo,
+      name: opts.target.repo
     }
     if (opts.target.username !== opts.target.account) {
       msg.org = opts.target.account
@@ -185,13 +183,13 @@ function cloneSource (opts) {
   return new Promise(function (resolve, reject) {
     var gitOpts = {}
     gitOpts.cwd = opts.tempFolder
-    var rightNow = new Date
+    var rightNow = new Date()
     var tmpFolderName = opts.tempFolder + '/' + opts.source.account + '-' + opts.source.repo + '-' + rightNow.getTime()
     var path = buildUrl(opts.source.username, opts.source.token, opts.source.host, opts.source.account, opts.source.repo)
     // 'git clone https://username:token@source.host/source.account/source.repo.git tempFolder'
     var gitCommands = ['clone', path, tmpFolderName]
     gitExec(gitCommands, gitOpts, function (err, data) {
-      console.log(err,data)
+      console.log(err, data)
       if (err) reject(err)
       resolve({results: data, tmpPath: tmpFolderName})
     })
@@ -215,7 +213,7 @@ function cleanTemp (opts) {
     // delete the temp folder
     // attempt at sync
     deleteFolderRecursive(opts.tmpPath)
-    if(opts.tmpCreated){
+    if (opts.tmpCreated) {
       deleteFolderRecursive(opts.tempFolder)
     }
     resolve()
@@ -245,7 +243,8 @@ function gitExec (commands, opts, callback) {
     cwd: opts.cwd
   }
   var child = ChildProcess.spawn('git', commands, options)
-  var stdout = [], stderr = []
+  var stdout = []
+  var stderr = []
   child.stdout.addListener('data', function (text) {
     stdout[stdout.length] = text
   })
@@ -269,7 +268,9 @@ function gitExec (commands, opts, callback) {
 }
 // Also from creationix/node-git https://github.com/creationix/node-git/blob/master/lib/tools.js#L2
 function toolsJoin (arr, encoding) {
-  var result, index = 0, length
+  var result
+  var index = 0
+  var length
   length = arr.reduce(function (l, b) {
     return l + b.length
   }, 0)
@@ -286,7 +287,7 @@ function toolsJoin (arr, encoding) {
 
 // helper function for removing a folder. http://www.geedew.com/remove-a-directory-that-is-not-empty-in-nodejs/
 function deleteFolderRecursive (path) {
-  if ( fs.existsSync(path)) {
+  if (fs.existsSync(path)) {
     fs.readdirSync(path).forEach(function (file, index) {
       var curPath = path + '/' + file
       if (fs.lstatSync(curPath).isDirectory()) { // recurse
@@ -305,15 +306,15 @@ function deleteFolderRecursiveAsync (path, callback) {
       callback(err, [])
       return
     }
-    var wait = files.length,
-      count = 0,
-      folderDone = function (err) {
-        count++
-        // If we cleaned out all the files, continue
-        if ( count >= wait || err) {
-          fs.rmdir(path, callback)
-        }
+    var wait = files.length
+    var count = 0
+    var folderDone = function (err) {
+      count++
+      // If we cleaned out all the files, continue
+      if (count >= wait || err) {
+        fs.rmdir(path, callback)
       }
+    }
     // Empty directory to bail early
     if (!wait) {
       folderDone()
@@ -325,12 +326,12 @@ function deleteFolderRecursiveAsync (path, callback) {
     files.forEach(function (file) {
       var curPath = path + '/' + file
       fs.lstat(curPath, function (err, stats) {
-        if ( err ) {
+        if (err) {
           callback(err, [])
           return
         }
-        if ( stats.isDirectory()) {
-          rmdirAsync(curPath, folderDone)
+        if (stats.isDirectory()) {
+          deleteFolderRecursiveAsync(curPath, folderDone)
         } else {
           fs.unlink(curPath, folderDone)
         }
