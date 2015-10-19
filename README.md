@@ -7,7 +7,7 @@
 
 A node utility to manually clone Github repositories. *with bonus CLI!*
 
- Github, by design, restricts the number of times you can fork a repo into a single account. Even then, after forking, you are bound to the upstream in your repo page, which if you are doing an iterative work can sometimes be a hinderance to marketing. There are [hacks](https://adrianshort.org/create-multiple-forks-of-a-github-repo/) and [workarounds](http://therebelrobot.com/tech/2015/10/16/a-simple-method-to-fork-repos-more-than-once.html) for this, but **manualfork** allows you to manually clone a repo with a single command.
+ Github, by design, restricts the number of times you can fork a repo into a single account. Even then, after forking, you are bound to the upstream in your repo page, which if you are doing an iterative work can sometimes be a hinderance to marketing. There are [hacks](https://adrianshort.org/create-multiple-forks-of-a-github-repo/) and [workarounds](https://help.github.com/articles/duplicating-a-repository/) for this, but **manualfork** allows you to manually clone a repo with a single command.
 
 ## Installation
 
@@ -46,7 +46,6 @@ Usage:
 Options:
   -u, --user [STRING]    Your Github Username (Default is username-from-environment)
   -t, --token [STRING]   Your Github Access Token (Default is token-from-environment)
-  -b, --branch [STRING]  branches to pull from:to (e.g. master:develop)  (Default is master:master)
   -f, --force BOOL       force push target branch
   -c, --create BOOL      create target repo on Github
   -k, --no-color         Omit color from output
@@ -63,8 +62,14 @@ var manualforkOpts = {
   username: username,
   token: token,
   host: 'github.com',
-  source: source,
-  target: target,
+  source: {
+    account: 'other-user',
+    repo: 'other-repo'
+  },
+  target: {
+    account: 'your-user',
+    repo: 'your-repo'
+  },
   create: true
 }
 manualfork.fork(manualforkOpts)

@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-console.log('hello!')
 require('dotenv').load()
 var cli = require('cli')
 var pkg = require('../package.json')
@@ -20,7 +19,6 @@ if (process.env.GITHUB_TOKEN) {
 var options = cli.parse({
   user: userOpts,
   token: tokenOpts,
-  branch: [ 'b', 'branches to pull from:to (e.g. master:develop)', 'string', 'master:master'],
   force: [ 'f', 'force push target branch', 'bool', false],
   create: [ 'c', 'create target repo on Github', 'bool', false],
 })

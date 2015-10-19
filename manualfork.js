@@ -16,14 +16,12 @@ var ManualFork = {
       host, // if same for both
       account, // if same for both
       repo, // if same for both
-      branch, // if same for both
       source: {
       username,
       token,
       host,
       account,
       repo,
-      branch
       },
       target: {
       username,
@@ -31,7 +29,6 @@ var ManualFork = {
       host,
       account,
       repo,
-      branch
         },
       tempFolder,
       ghOpts: {},
@@ -63,13 +60,9 @@ var ManualFork = {
         opts.source.repo = opts.source.repo || opts.repo
         opts.target.repo = opts.target.repo || opts.repo
       }
-      opts.source.branch = opts.source.branch || opts.branch || 'master'
-      opts.target.branch = opts.target.branch || opts.branch || 'master'
       opts.tempFolder = opts.tempFolder ? path.resolve(process.cwd(), opts.tempFolder) : path.resolve(__dirname, './tmp')
-      console.log(opts.tempFolder)
       try {
         var folderStats = fs.statSync(opts.tempFolder)
-        console.log(opts.tempFolder, folderStats.isDirectory())
         if (!folderStats.isDirectory()) {
           reject('Temporary path is not a directory.')
         }
@@ -83,7 +76,6 @@ var ManualFork = {
         // required
         version: opts.target.apiVersion,
         // optional
-        debug: true,
         protocol: opts.target.apiProtocol,
         host: opts.target.api, // should be api.github.com for GitHub
         pathPrefix: opts.target.apiPrefix, // for some GHEs; none for GitHub
@@ -141,7 +133,6 @@ var ManualFork = {
       })
     })
   },
-  // forkAllBranches: function(){}, // TODO: make this.
   _internal: { // for testing
     createTarget: createTarget,
     cloneSource: cloneSource,
@@ -187,9 +178,8 @@ function cloneSource (opts) {
     var tmpFolderName = opts.tempFolder + '/' + opts.source.account + '-' + opts.source.repo + '-' + rightNow.getTime()
     var path = buildUrl(opts.source.username, opts.source.token, opts.source.host, opts.source.account, opts.source.repo)
     // 'git clone https://username:token@source.host/source.account/source.repo.git tempFolder'
-    var gitCommands = ['clone', path, tmpFolderName]
+    var gitCommands = ['clone', '--bare', path, tmpFolderName]
     gitExec(gitCommands, gitOpts, function (err, data) {
-      console.log(err, data)
       if (err) reject(err)
       resolve({results: data, tmpPath: tmpFolderName})
     })
@@ -200,8 +190,8 @@ function pushTarget (opts) {
     var gitOpts = {}
     gitOpts.cwd = opts.tmpPath
     var path = buildUrl(opts.target.username, opts.target.token, opts.target.host, opts.target.account, opts.target.repo)
-    // 'git push -u https://target.username:target.token@target.host/target.account/target.repo.git source.branch:target.branch'
-    var gitCommands = ['push', '-u', path, opts.source.branch + ':' + opts.target.branch]
+    // 'git push -u https://target.username:target.token@target.host/target.account/target.repo.git'
+    var gitCommands = ['push', '--mirror', path]
     gitExec(gitCommands, gitOpts, function (err, data) {
       if (err) reject(err)
       resolve({results: data, tmpPath: opts.tmpPath})
@@ -257,7 +247,6 @@ function gitExec (commands, opts, callback) {
   })
   child.addListener('close', function () {
     if (exitCode > 0) {
-      console.log('Exit code sux ass')
       var err = new Error('git ' + commands.join(' ') + '\n' + toolsJoin(stderr, 'utf8'))
       callback(err)
       return
