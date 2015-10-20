@@ -31,9 +31,6 @@ cli.main(function (args, options) {
   source = buildRepoObject(source)
   var target = args[2] || args[1]
   target = buildRepoObject(target)
-  options.branch = buildBranchObject(options.branch)
-  source.branch = options.branch.source
-  target.branch = options.branch.target
   var manualforkOpts = {
     username: options.username,
     token: options.token,
@@ -61,12 +58,5 @@ function buildRepoObject (repoString) {
   return {
     account: repoString[0],
     repo: repoString[1]
-  }
-}
-function buildBranchObject (branchString) {
-  branchString = branchString.split(':')
-  return {
-    source: branchString[0],
-    target: branchString[1]
   }
 }
