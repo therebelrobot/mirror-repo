@@ -12,13 +12,19 @@ if (process.env.GITHUB_USER) {
   userOpts.push(user)
 }
 var tokenOpts = [ 't', 'Your Github Access Token', 'string' ]
+var oauthOpts = [ 'o', 'Your Github Oauth Access Token', 'string' ]
 if (process.env.GITHUB_TOKEN) {
   var token = process.env.GITHUB_TOKEN
   tokenOpts.push(token)
 }
+if (process.env.GITHUB_OAUTH) {
+  var oauth = process.env.GITHUB_OAUTH
+  oauthOpts.push(token)
+}
 var options = cli.parse({
   user: userOpts,
   token: tokenOpts,
+  oauth: oauthOpts,
   force: [ 'f', 'force push target branch', 'bool', false],
   create: [ 'c', 'create target repo on Github', 'bool', false],
 })
@@ -33,10 +39,15 @@ cli.main(function (args, options) {
   target = buildRepoObject(target)
   var manualforkOpts = {
     username: options.username,
-    token: options.token,
     host: 'github.com',
     source: source,
     target: target
+  }
+  if(options.token){
+    manualforkOpts.token = options.token
+  }
+  if(options.oauth){
+    manualforkOpts.oauth = options.oauth
   }
   if (options.create) {
     manualforkOpts.create = options.create
