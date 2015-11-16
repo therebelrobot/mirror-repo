@@ -1,6 +1,6 @@
 # mirror
-[![NPM](https://nodei.co/npm/mirror.png?downloads=true)](https://nodei.co/npm/mirror/)
-[![NPM](https://nodei.co/npm-dl/mirror.png?months=3&height=2)](https://nodei.co/npm/mirror/)
+[![NPM](https://nodei.co/npm/mirror-repo.png?downloads=true)](https://nodei.co/npm/mirror-repo/)
+[![NPM](https://nodei.co/npm-dl/mirror-repo.png?months=3&height=2)](https://nodei.co/npm/mirror-repo/)
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/feross/standard)
 [![Dependency Status](https://david-dm.org/therebelrobot/mirror.svg)](https://david-dm.org/therebelrobot/mirror)
@@ -12,13 +12,13 @@ A node utility to manually clone Github repositories. *with bonus CLI!*
 ## Installation
 
 ```bash
-npm i -g mirror
+npm i -g mirror-repo
 ```
 
 Or if you want to use it in a program:
 
 ```bash
-npm i mirror
+npm i mirror-repo
 ```
 
 ## Usage
@@ -57,7 +57,7 @@ Options:
 ### API
 
 ```
-var mirror = require('mirror')
+var mirror = require('mirror-repo')
 var mirrorOpts = {
   username: username,
   token: token,
