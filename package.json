@@ -1,10 +1,10 @@
 {
-  "name": "manualfork",
+  "name": "mirror",
   "version": "1.0.3",
-  "description": "A simple node module that allows you to manually (and cleanly) fork a Github repository into another location. The magic behind therebelrobot/manualfork",
-  "main": "manualfork.js",
+  "description": "A simple node module that allows you to manually (and cleanly) fork a Github repository into another location. The magic behind therebelrobot/mirror",
+  "main": "mirror.js",
   "bin": {
-    "manualfork": "bin/cli"
+    "mirror": "bin/cli"
   },
   "scripts": {
     "pretest": "standard",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/therebelrobot/node-manualfork.git"
+    "url": "git+https://github.com/therebelrobot/node-mirror.git"
   },
   "author": "Trent Oswald <trentoswald@therebelrobot.com> (@therebelrobot)",
   "license": "ISC",
@@ -28,9 +28,9 @@
     "git"
   ],
   "bugs": {
-    "url": "https://github.com/therebelrobot/node-manualfork/issues"
+    "url": "https://github.com/therebelrobot/node-mirror/issues"
   },
-  "homepage": "https://github.com/therebelrobot/node-manualfork#readme",
+  "homepage": "https://github.com/therebelrobot/node-mirror#readme",
   "dependencies": {
     "breeze": "^1.1.7",
     "cli": "^0.11.0",

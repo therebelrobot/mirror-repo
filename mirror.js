@@ -11,7 +11,7 @@ var cleanTemp = require('./helpers/clean-temp')
 var buildUrl = require('./helpers/build-url')
 var gitExec = require('./helpers/git-exec')
 
-var ManualFork = {
+var mirror = {
   fork: function (opts) {
     return new Promise(function (resolve, reject) {
       // build sane objects
@@ -73,7 +73,7 @@ var ManualFork = {
         pathPrefix: opts.target.apiPrefix, // for some GHEs; none for GitHub
         // timeout: 5000,
         headers: {
-          'user-agent': 'manualfork v' + pkg.version // GitHub is happy with a unique user agent
+          'user-agent': 'mirror v' + pkg.version // GitHub is happy with a unique user agent
         }
       })
       var flow = new Breeze()
@@ -136,4 +136,4 @@ var ManualFork = {
   }
 }
 
-module.exports = ManualFork
+module.exports = mirror
