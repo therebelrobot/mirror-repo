@@ -72,7 +72,7 @@ var mirrorOpts = {
   },
   create: true
 }
-mirror.fork(mirrorOpts)
+mirror.repo(mirrorOpts)
   .then(function (data) {
     console.log('mirror was successful!')
   })

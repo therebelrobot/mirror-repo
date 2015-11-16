@@ -12,7 +12,7 @@ var buildUrl = require('./helpers/build-url')
 var gitExec = require('./helpers/git-exec')
 
 var mirror = {
-  fork: function (opts) {
+  repo: function (opts) {
     return new Promise(function (resolve, reject) {
       // build sane objects
       if (opts.username) {

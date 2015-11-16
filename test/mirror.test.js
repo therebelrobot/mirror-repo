@@ -10,9 +10,9 @@ describe('mirror', function () {
     expect(mirror).to.be.an('object')
     done()
   })
-  describe('.fork', function () {
+  describe('.repo', function () {
     it('should be a function', function (done) {
-      expect(mirror.fork).to.be.a('function')
+      expect(mirror.repo).to.be.a('function')
       done()
     })
   })
