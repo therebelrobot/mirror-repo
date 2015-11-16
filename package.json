@@ -1,6 +1,6 @@
 {
   "name": "mirror-repo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple node module that allows you to manually (and cleanly) fork a Github repository into another location. The magic behind therebelrobot/mirror",
   "main": "mirror.js",
   "bin": {
