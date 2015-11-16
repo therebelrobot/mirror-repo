@@ -1,4 +1,4 @@
-# mirror
+# mirror-repo
 [![NPM](https://nodei.co/npm/mirror-repo.png?downloads=true)](https://nodei.co/npm/mirror-repo/)
 [![NPM](https://nodei.co/npm-dl/mirror-repo.png?months=3&height=2)](https://nodei.co/npm/mirror-repo/)
 
