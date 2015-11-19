@@ -5,6 +5,7 @@ var Breeze = require('breeze')
 var pkg = require('./package.json')
 
 var createTarget = require('./helpers/create-target')
+var checkCommits = require('./helpers/check-commits')
 var cloneSource = require('./helpers/clone-source')
 var pushTarget = require('./helpers/push-target')
 var cleanTemp = require('./helpers/clean-temp')
@@ -95,12 +96,31 @@ var mirrorRepo = {
           tempFolder: opts.tempFolder
         }))
       })
+      // prevent push if commits present
+      if (!opts.force) {
+        flow.then(function (next, data) {
+          next(checkCommits({
+            username: opts.username,
+            token: opts.token,
+            target: opts.target,
+            ghOpts: opts.ghOpts,
+            gh:gh
+          }).then(function(commits){
+            if (commits.length){
+              throw new Error('Commits present in target repo. Unable to push without force flag enabled.')
+              return
+            }
+            return data
+          }))
+        })
+      }
       // push temp folder to target
       flow.then(function (next, data) {
         next(pushTarget({
           source: opts.source,
           target: opts.target,
-          tmpPath: data.tmpPath
+          tmpPath: data.tmpPath,
+          force: opts.force
         }))
       })
       // clean up temp
