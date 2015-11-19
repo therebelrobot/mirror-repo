@@ -85,7 +85,7 @@ var mirrorRepo = {
             token: opts.token,
             target: opts.target,
             ghOpts: opts.ghOpts,
-            gh:gh
+            gh: gh
           }))
         })
       }
@@ -104,9 +104,9 @@ var mirrorRepo = {
             token: opts.token,
             target: opts.target,
             ghOpts: opts.ghOpts,
-            gh:gh
-          }).then(function(commits){
-            if (commits.length){
+            gh: gh
+          }).then(function (commits) {
+            if (commits.length) {
               throw new Error('Commits present in target repo. Unable to push without force flag enabled.')
               return
             }

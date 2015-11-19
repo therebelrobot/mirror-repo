@@ -18,7 +18,11 @@ function checkCommits (opts) {
     msg.user = opts.target.account
     gh.repos.getCommits(msg, createCallback)
     function createCallback (err, data) {
-      if (err) reject(err)
+      err = JSON.parse(err.toString())
+      if (err && err.message !== 'Git Repository is empty.') {
+        reject(err)
+      }
+      data = data || []
       resolve(data)
     }
   })
