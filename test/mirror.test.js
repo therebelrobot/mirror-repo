@@ -1,11 +1,12 @@
 var expect = require('chai').expect
 // var _ = require('lodash')
-var mirror = require('../mirror')
+var mirror = require('../mirror-repo')
 
 /* Definitions for JS Standard */
 /* global describe, it */
 
 describe('mirror', function () {
+
   it('should be an object', function (done) {
     expect(mirror).to.be.an('object')
     done()
@@ -57,6 +58,7 @@ describe('mirror', function () {
         done()
       })
     })
+    /*
     describe('toolsJoin', function () {
       it('should be a function', function (done) {
         expect(mirror._internal.toolsJoin).to.be.a('function')
@@ -75,5 +77,6 @@ describe('mirror', function () {
         done()
       })
     })
+    */
   })
 })

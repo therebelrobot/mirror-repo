@@ -1,10 +1,9 @@
 {
   "name": "mirror-repo",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "A simple node module that allows you to manually (and cleanly) fork a Github repository into another location. The magic behind therebelrobot/mirror",
   "main": "mirror-repo.js",
   "scripts": {
-    "pretest": "standard",
     "test": "istanbul cover _mocha --"
   },
   "repository": {
@@ -30,8 +29,8 @@
   "homepage": "https://github.com/therebelrobot/mirror-repo#readme",
   "dependencies": {
     "breeze": "^1.1.7",
-    "github": "^0.2.4",
-    "lodash": "^3.10.1"
+    "github": "^9.2.0",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "chai": "^3.3.0",
